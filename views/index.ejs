@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bim</title>
+</head>
+<body>
+    <form action="signup" method="post" class="signup-form">
+        <input type="phone" id="phone" placeholder="Input a valid whatsapp Number ">
+        <span id="otp-wrapper">Input OTP
+            <input id="OTP" name="OTP" placeholder="OTP" style="display: none;">
+        </span>
+        <button type="submit">GET OTP</button>
+
+    </form>
+</body>
+<script>
+    const signupForm = document.querySelector('.signup-form')
+    console.log(signupForm)
+    const phoneInput = document.querySelector('#phone')
+    let otpInput = document.querySelector('#OTP')
+    const submitButton = signupForm.querySelector('button[type="submit"]')
+    let actions = ['sendOtp', 'verify'], step = 0
+
+    signupForm.addEventListener('submit', async e => { 
+        e.preventDefault();
+        submitButton.disabled = true
+        console.log(e.target.action.split('/'))
+        switch (e.target.action.split('/').at(-1)) {
+            case 'signup':
+                const {status} = await signupAction(phoneInput.value, 'hello')
+                if(status) {
+                    otpInput.style.display = 'inline-block'
+                    submitButton.innerHTML = 'verify'
+                    // phoneInput.disabled = true
+                    phoneInput.readonly = true
+                    alert(`OTP sent to whatsapp Number ${phoneInput.value}`)
+                    e.target.action = 'verify'
+                    
+                }
+                
+                break;
+            case 'verify':
+                const {statu, message} = await verifyAction(phoneInput.value, otpInput.value)
+                    if(statu) {
+                        otpInput.style.display = 'none'
+                        phoneInput.value = null
+                        phoneInput.readonly = false
+                        alert(message)
+                        submitButton.innerHTML = 'get OTP'
+                        e.target.action = 'signup'
+                    }
+                break;
+        
+            default:
+                break;
+        }
+        submitButton.disabled = false
+
+    })
+
+    const setStyle = () => {
+
+    }
+
+const signupAction = async (number, name) => {
+        return await fetch("/signup", {
+        method: "POST",
+        body: JSON.stringify({
+            number: number,
+            name: name
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+        })
+        .then(response => response.json())
+        .then(json => {
+            console.log(json)
+            return  json
+        })
+        .catch(err => {
+            console.log(err)
+            return {status:false}
+        })
+    
+    }
+const verifyAction = async (number, code) => {
+        return await fetch("/verify", {
+        method: "POST",
+        body: JSON.stringify({
+            number: number,
+            code: code
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+        })
+        .then(response => response.json())
+        .then(json => {
+            console.log(json)
+            return  json
+        })
+        .catch(err => {
+            console.log(err)
+            return {status:false}
+        })
+    
+    }
+
+
+</script>
+</html>

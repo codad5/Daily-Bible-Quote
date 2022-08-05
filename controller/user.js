@@ -13,6 +13,9 @@ class userController {
     static async find(phone){
         return await userModel.find({phone:phone})
     }
+    static async getAll(){
+        return await userModel.find()
+    }
     async new(){
         if(await this.exist()) throw new Error('user exist')
         const user = new userModel({

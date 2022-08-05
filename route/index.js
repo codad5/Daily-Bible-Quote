@@ -5,7 +5,12 @@ const route = express.Router()
 const { validPhoneNumber, sendCode, validateCode } = require('../utils/validator')
 const { connect, disconnect } = require("../services/db");
 const Redis = require('ioredis')
-const redisClient = new Redis()
+const redisClient = new Redis({
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+    username: process.env.REDIS_USER,
+    password: process.env.REDIS_PASS,
+})
 const userController = require('../controller/user')
 // const redisClient = Redis.createClient({
 //     url: process.env.REDIS_URL

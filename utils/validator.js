@@ -24,7 +24,7 @@ const validPhoneNumber = async (number) => {
 }
 const sendCode = async (number, code = null) => {
     try {
-        const verification = await client.verify.v2.services(`VA08283fce17505799cf5d88d788a5db22`)
+        const verification = await client.verify.v2.services(`${process.env.SERV_TWI}`)
             .verifications
             .create({ to: `${number}`, channel: 'whatsapp' });
         return verification;
@@ -37,7 +37,7 @@ const sendCode = async (number, code = null) => {
 const validateCode = async (number, code) => {
 
     try {
-        const verification = await client.verify.v2.services(`VA08283fce17505799cf5d88d788a5db22`)
+        const verification = await client.verify.v2.services(`${process.env.SERV_TWI}`)
             .verificationChecks
             .create({ to: `${number}`, channel: 'whatsapp', code:code });
         return verification;

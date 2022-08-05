@@ -4,6 +4,7 @@ const { validPhoneNumber, sendCode } = require('./utils/validator')
 const { connect, disconnect } = require("./services/db");
 const Redis = require('redis')
 const indexRoute = require('./route/index')
+const sendRoute = require('./route/send')
 // const redisClient = Redis.createClient({
 //     url:process.env.REDIS_URL
 // })
@@ -23,6 +24,7 @@ app.use(bodyParser.json())
 app.get('/', (req, res) => {
     res.render('index')
 })
+app.use('/sendQoute', sendRoute)
 app.use('/',  indexRoute)
 
 

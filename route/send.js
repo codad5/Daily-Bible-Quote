@@ -30,7 +30,7 @@ route.route('/')
         const qoute = await getQuote()
         const users = await userController.getAll()
         console.log(users)
-        users.forEach(user => {
+        users.forEach(async user => {
             console.log(user?.phone)
             await client.messages
                 .create({

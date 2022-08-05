@@ -32,22 +32,25 @@ route.route('/')
         console.log(users)
         users.forEach(user => {
             console.log(user?.phone)
-            client.messages
+            await client.messages
                 .create({
                     from: `whatsapp:+14155238886`,
                     body: qoute,
                     to: `whatsapp:${user?.phone}`
                 })
-                .then(message => console.log(message.sid))
+                .then(message => console.log(message))
                 .catch(e => { console.log(e)
-                        throw err
-                });
+                        console.log(e)
+                })
+.finally(() => {
+                    res.send({})
+                })
         })
-        console.log()
-        return res.render('index')
+        //console.log()
+        //return res.render('index')
     }
     catch(err) {
-            client.messages
+            await client.messages
                 .create({
                     from: `whatsapp:+14155238886`,
                     body: `quote error ${err.message}`,

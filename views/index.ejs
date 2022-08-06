@@ -43,7 +43,8 @@
                 
                 break;
             case 'verify':
-                const {statu, message} = await verifyAction(phoneInput.value, otpInput.value)
+                const {status:statu, message} = await verifyAction(phoneInput.value, otpInput.value)
+                console.log(statu)
                     if(statu) {
                         otpInput.style.display = 'none'
                         phoneInput.value = null
